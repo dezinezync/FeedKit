@@ -98,7 +98,7 @@ extension ViewController: NSTableViewDelegate {
             case 0: cell.textField?.stringValue = self.feed?.title ?? "[no title]"
             case 1: cell.textField?.stringValue = self.feed?.link ?? "[no link]"
             case 2: cell.textField?.stringValue = self.feed?.description ?? "[no description]"
-            case 3: cell.textField?.stringValue = "[no hub]"
+            case 3: cell.textField?.stringValue = self.feed?.hub ?? "[no hub]"
             default: fatalError()
             }
             
