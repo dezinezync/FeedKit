@@ -25,7 +25,7 @@
 import Cocoa
 import FeedKit
 
-let feedURL = URL(string: "http://images.apple.com/main/rss/hotnews/hotnews.rss")!
+let feedURL = URL(string: "https://elytra.app/feed")!
 
 class ViewController: NSViewController {
 
@@ -42,7 +42,7 @@ class ViewController: NSViewController {
 
         // Parse asynchronously, not to block the UI.
         Task {
-            let result = parser.parseAsync()
+            let result = await parser.parseAsync()
             switch result {
             case .success(let feed):
                 // Grab the parsed feed directly as an optional rss, atom or json feed object
@@ -57,8 +57,9 @@ class ViewController: NSViewController {
                 // }
                 
                 // Then back to the Main thread to update the UI.
-                MainActor.run {
-                    self.feedItemsTableView.reloadData()
+                await MainActor.run {
+                  self.feedTableView.reloadData()
+                  self.feedItemsTableView.reloadData()
                 }
                 
             case .failure(let error):
@@ -97,6 +98,7 @@ extension ViewController: NSTableViewDelegate {
             case 0: cell.textField?.stringValue = self.feed?.title ?? "[no title]"
             case 1: cell.textField?.stringValue = self.feed?.link ?? "[no link]"
             case 2: cell.textField?.stringValue = self.feed?.description ?? "[no description]"
+            case 3: cell.textField?.stringValue = "[no hub]"
             default: fatalError()
             }
             
@@ -122,8 +124,10 @@ extension ViewController: NSTableViewDelegate {
 extension ViewController: NSTableViewDataSource {
     
     func numberOfRows(in tableView: NSTableView) -> Int {
+      assert(Thread.isMainThread, "must be called on the main-thread")
+      
         switch tableView {
-        case self.feedTableView: return 3
+        case self.feedTableView: return 4
         case self.feedItemsTableView: return self.feed?.items?.count ?? 0
         default: fatalError()
         }
