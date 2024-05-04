@@ -492,7 +492,15 @@ extension RSSFeed {
             default: break
                 
             }
-
+        case .rssChannelLink:
+          if attributes["rel"] == "hub" {
+            // is a hub definition, map on the feed
+            if self.hub == nil,
+               let href = attributes["href"],
+               let _ = URL(string: href) {
+              self.hub = href
+            }
+          }
             
         default: break
             
