@@ -111,7 +111,7 @@ extension RSSFeed {
       }
     case .rssChannelItemSource:
       self.items?.last?.source?.value = self.items?.last?.source?.value?.appending(string) ?? string
-    case .rssChannelItemContentEncoded:
+    case .rssChannelItemContentEncoded, .rssChannelItemDCContent:
       self.items?.last?.content?.contentEncoded = self.items?.last?.content?.contentEncoded?.appending(string) ?? string
     case .rssChannelSyndicationUpdatePeriod:
       self.syndication?.syUpdatePeriod = SyndicationUpdatePeriod(rawValue: string)

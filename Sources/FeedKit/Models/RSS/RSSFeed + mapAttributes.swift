@@ -108,7 +108,7 @@ extension RSSFeed {
                 self.items?.last?.source = RSSFeedItemSource(attributes: attributes)
             }
 
-        case .rssChannelItemContentEncoded:
+        case .rssChannelItemContentEncoded, .rssChannelItemDCContent:
 
             if  self.items?.last?.content == nil {
                 self.items?.last?.content = ContentNamespace()
